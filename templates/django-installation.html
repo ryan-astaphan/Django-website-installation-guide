@@ -1,0 +1,47 @@
+
+<h1>Instructions for Creating a Django Project</h1>
+<br>
+<h2>Initializing your virtual environment & Creating your project files</h2>
+  <ol>
+    <li>Create your project directory</li>
+    <li>pipenv install django</li>
+    <li>pipenv shell <em># this initializes your virtual environment</em></li>
+    <li>django-admin startproject config . <em># This creates your project files and config folder. 
+        Also, take note of the trailing whitespace and period.</em></li>
+    <li>python manage.py runserver <em># Launches the local server </em></li>
+  </ol>
+
+<h2>Creating a new app</h2>
+  <ol>
+    <li>python manage.py startapp 'app_name' <em># This creates your app files and folder.</em></li>
+    <li><em># In config/settings.py add the following within INSTALLED_APPS = []</em><br>
+    'app_name', <em># Take note of the trailing comma</em></li>
+  </ol>
+
+<h2>Adding Pages/Templates</h2>
+  <ol>
+    <li>Create a 'templates' folder in the main directory</li>
+    <li>#<em>config/settings.py - add the following in TEMPLATES = 'DIRS': [],<br></em>
+    str(BASE_DIR.joinpath('templates'))<br>
+    <em># It will end up looking like this</em>
+    'DIRS': [str(BASE_DIR.joinpath('templates'))], <em># This tells Django to check the templates folder in the main directory for template files.</em></li>
+    <li><em># In 'app_name'/views.py add the following</em><br>
+      from django.views.generic import TemplateView <br>
+      &nbsp;<br>
+      class 'Name'PageView(TemplateView):<br>
+      template_name = 'name.html'<em># This class sets up a new view for a page. And template_name links the view with the template file.</em></li>
+    <li><em># config/urls.py</em><br>
+    from django.urls import path, include <em>#this line will be in addition to the import admin</em><br>
+    <em># add the following in urlpatterns = []</em><br>
+    path('', include('app_name.urls)), <em># This tells config/urls.py to check app_name/urls.py</em></li>
+    <li>Create a urls.py file in your app folder</li>
+    <li><em># Add the following in app_name/urls.py</em><br>
+    from django.urls import path<br>
+    from .views import NamePageView <em># This imports the view class your created</em><br>
+    urlpatterns = [<br>
+    &nbsp; &nbsp; path('', NamePageView.as_view(), name='home'),<br>
+    <em># the first argument sets url. Since this is the homepage, nothing is added inside the quotes.<br>
+    the second argument calls the class view you created.<br>
+    the third argument creates a variable that can be used in links in place of a hard-coded URL. This allows you to change a views URL without having to update every link.</em></li>
+
+  </ol>
